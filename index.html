@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+
+<HEAD>
+
+   <TITLE>Industrial Dynamics, Technological Regimes and the Role of Demand. InDyTeRRoD</TITLE>
+
+   <META http-equiv=Content-Type content="text/html; charset=windows-1252">
+
+   <META name=keywords content="Industrial Dynamics, Innovation, Technological Regimes, Evolutionary Economics, netLogo, agent-based modelling">
+
+   <META name=Description content="InDyTeRRoD is an evolutionary model designed to explore industrial dynamics in alternative technological regimes. The model incorporates entry/exit mechanisms, innovation, imitation, competition, strategic learning and firm growth in an innovative industry.">
+
+   <META name=Authors content="Isabel Almud&iacute;, Francisco Fat&aacute;s &amp; Luis R. Izquierdo">
+
+   <STYLE type="text/css">
+      H1 {
+         BACKGROUND-COLOR: #111199;
+         color: #ffffff;
+         font-family: monospace;
+         padding: 5px;
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      H2 {
+         BACKGROUND-COLOR: #66ccff;
+         font-family: arial;
+         padding: 4px;
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      H3 {
+         BACKGROUND-COLOR: #cccccc;
+         font-family: verdana;
+         font-weight: bold;
+         padding: 4px;
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      p {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      table {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      ul {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      ol {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.parameter {
+         font-family: arial;
+         color: red;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.variable {
+         font-family: arial;
+         color: black;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.button {
+         font-family: arial;
+         color: blue;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.value {
+         font-family: arial;
+         color: #444444;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.slider {
+         font-family: arial;
+         color: green;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.monitor {
+         font-family: arial;
+         color: #B8860B;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      i.plot {
+         font-family: arial;
+         color: purple;
+         font-weight: bold
+      }
+   </STYLE>
+
+</HEAD>
+
+<body>
+
+   <H1>Industrial Dynamics, Technological Regimes and the Role of Demand. InDyTeRRoD</H1>
+   <h3>Isabel Almud&iacute;, Francisco Fat&aacute;s &amp; Luis R. Izquierdo</h3>
+
+   <H2>HOW TO INSTALL THE MODEL</H2>
+
+   <p>To use InDyTeRRoD, you will have to install <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo 5.3.1 (free and open source)</a> and download <a href="indyterrod.nlogo">the model itself</a>. Unzip the downloaded file and click on indyterrod.nlogo</p>
+
+   <!--
+   <p>This applet requires requires Java 5 or higher. You may obtain the latest Java plugin from
+      <a target="_blank" href="http://java.sun.com/getjava/download.html">Sun's Java site</a>.</p>
+   <hr>
+
+   <p align="center">
+      <applet code="org.nlogo.lite.Applet" archive="NetLogoLite.jar" width="1200" height="670">
+         <param name="DefaultModel" value="indyterrod.nlogo">
+         <param name="java_arguments" value="-Djnlp.packEnabled=true">
+      </applet>
+   </p>
+   <p>powered by
+      <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo</a></p>
+
+   <p>view/download model file:
+      <a href="indyterrod.nlogo">applet.nlogo</a>
+   </p>
+-->
+
+   <H2>DESCRIPTION OF THE MODEL</H2>
+
+   <p><b>InDyTeRRoD</b> (<b>In</b>dustrial <b>Dy</b>namics and <b>Te</b>chnological <b>R</b>egimes and the <b>R</b>ole of <b>D</b>emand) is an evolutionary model designed to explore industrial dynamics in alternative technological regimes. The model incorporates entry/exit mechanisms, innovation, imitation, competition, strategic learning and firm growth in an innovative industry.</p>
+
+   <p>This section explains the formal model that <b>InDyTeRRoD</b> implements. The information provided here should suffice to re-implement the same formal model in any sophisticated enough modelling platform. We use bold red italicised arial font to denote <i class="parameter">parameters</i> and <i class="parameter">initial conditions</i> (i.e. variables that can be set by the user), and we use bold green italicised arial font to denote the name of the corresponding <i class="slider">slider</i> or <i class="slider">box</i> in the interface of the model above. All <i class="slider">sliders</i> can be changed at run-time with immediate effect on the dynamics of the model (except initial conditions).</p>
+
+   <p>The figure below summarizes the main interactions among the variables in the model; it is a helpful reference to look at whilst reading the explanation of the model.</p>
+
+   <center><img src="sketch.png" alt="sketch"></center>
+   <p align="center"><b>Overview of the interactions among the variables in the model.</b> The variables that are more closely related to costs and prices are placed on the left, whilst the variables more related to the processes of innovation and performance improvement appear towards the right. A solid black arrow from X to Y denotes that an increment in variable X implies an immediate increment in variable Y. A dashed black arrow implies that the positive influence is not immediate, but it is delayed one time step. A solid red arrow from X to Y denotes an immediate negative influence, i.e. that an increment in variable X implies an immediate decrement in variable Y.</p>
+
+   <p>As an example, identify the following two negative feedback loops in the figure. The first one favors the stability of the variable performance <i class="variable">x<sub>i</sub></i>, whilst the latter favors the stability of competitiveness <i class="variable">&gamma;<sub>i</sub></i>):</p>
+   <ul>
+      <li>Higher R&amp;D productivities <i class="variable">z<sub>it</sub></i> have a positive effect on performance <i class="variable">x<sub>it+1</sub></i> in the next period, but -ceteris paribus- this increase in performance <i class="variable">x<sub>it+1</sub></i> diminishes the gap that separates it from the maximum performance <i class="variable">x<sup><i>max</i></sup><sub>t+1</sub></i>, and thus lowers R&amp;D productivity <i class="variable">z<sub>it+1</sub></i> in the next period. </li>
+      <li>Similarly, greater levels of competitiveness <i class="variable">&gamma;<sub>it</sub></i> have a direct positive effect on market shares <i class="variable">s<sub>it+1</sub></i> in the next period, which lead to higher prices <i class="variable">p<sub>it+1</sub></i>, which in turn imply lower competitiveness <i class="variable">&gamma;<sub>it+1</sub></i> in the next period.</li>
+   </ul>
+   </p>
+
+   <p>In order to simplify the model's presentation, we classify our assumptions into six subsections: "The Firms' Competitiveness", "Demand Transformation", "Production", "R&amp;D Spending", "Product Innovation" and "Exit and Entry of firms".</p>
+
+   <h3>The Firms' Competitiveness</h3>
+
+   <p>At any time there are <i class="variable">n<sub>t</sub></i> firms (indexed in <i>i</i> = 1,...,<i class="variable">n<sub>t</sub></i>) competing in an innovative industry. We assume that firms compete over price <i class="variable">p<sub>it</sub></i> and product performance <i class="variable">x<sub>it</sub></i> (quality, reliability, size, speed, precision). Firms set prices applying a margin to the unit cost <i class="variable">c<sub>it</sub></i> equal to their individual market share <i class="variable">s<sub>it</sub></i> (larger margins for greater market powers). Thus, </p>
+
+   <p align="center">
+      <i class="variable">p<sub>it</sub></i> = (1 + <i class="variable">s<sub>it</sub></i>)&middot;<i class="variable">c<sub>it</sub></i>
+   </p>
+
+   <p>Thus, firm <i>i</i>'s unit profit is</p>
+
+   <p align="center">
+      <i class="variable">&pi;<sub>it</sub></i> = <i class="variable">p<sub>it</sub></i> - <i class="variable">c<sub>it</sub></i> = <i class="variable">s<sub>it</sub></i>&middot;<i class="variable">c<sub>it</sub></i>
+   </p>
+
+
+   <p>Regarding performance <i class="variable">x<sub>i</sub></i>, we will establish below how firms improve their products through R&amp;D-based technological innovations. For now, given the vector (<i class="variable">p<sub>it</sub></i>, <i class="variable">x<sub>it</sub></i>) we can define the level of competitiveness of firm <i>i</i>'s product (as consumers perceive it in the global market) in the following way:</p>
+
+   <p align="center">
+      <i class="variable">&gamma;<sub>it</sub></i> = (1-<i class="parameter">&alpha;</i>)&middot;(<i class="variable">x<sub>it</sub></i>-<i class="variable">x<sub>t</sub></i>)/<i class="variable">x<sub>t</sub></i> - <i class="parameter">&alpha;</i>&middot;(<i class="variable">p<sub>it</sub></i>-<i class="variable">p<sub>t</sub></i>)/<i class="variable">p<sub>t</sub></i>
+   </p>
+   <p> where <i class="variable">x<sub>t</sub></i> = &sum;<sub><i>j</i></sub><i class="variable">x<sub>jt</sub></i>/<i class="variable">n<sub>t</sub></i> and <i class="variable">p<sub>t</sub></i> = &sum;<sub><i>j</i></sub><i class="variable">p<sub>jt</sub></i>/<i class="variable">n<sub>t</sub></i>.</p>
+
+   <p>This formula captures the fact that consumers value both high levels of performance and low prices. The subjective relativity implied by the terms "high" and "low" is quantified using the average across the different products, whilst the trade-off between performance and price is regulated by parameter <i class="parameter">&alpha;</i> (the <i class="slider">price/performance-sensitivity</i> of demand).
+   </p>
+
+   <h3>Demand Transformation</h3>
+   <p>Production and growth are demand-driven. Regarding the demand-side of the market, we consider that the global demand (<i class="variable">Q<sup>d</sup></i>) is constant and equal to 1. As <i class="variable">s<sub>i</sub></i> is the proportion of global demand supplied by firm <i>i</i> -that is, its market share- we can see that the instantaneous demand of firm <i>i</i> will be equal to its market share:</p>
+
+   <p align="center">
+      <i class="variable">Q<sup>d</sup><sub>it</sub></i> = <i class="variable">s<sub>it</sub></i>&middot;<i class="variable">Q<sup>d</sup></i> = <i class="variable">s<sub>it</sub></i>
+   </p>
+
+   <p>If we consider that the consumers interact among themselves, observing each other and disseminating information regarding prices and performances of different products, we can assume that there will be a gradual process of demand transformation. That is, consumers will withdraw their demand from certain firms and pass it on to others with a higher level of competitiveness <i class="variable">&gamma;<sub>it</sub></i>. Fatas-Villafranca et al. (2011) propose explicit evolutionary microfoundations to capture this kind of processes, and obtain a typical replicator dynamics expression. Along these lines, and drawing also on Metcalfe (1998), we propose that this process of demand transformation can be represented by:</p>
+
+   <p align="center">
+      (<i class="variable">s<sub>it+1</sub></i>-<i class="variable">s<sub>it</sub></i>)/<i class="variable">s<sub>it</sub></i> = <i class="variable">&gamma;<sub>it</sub></i>-<i class="variable">&gamma;<sub>t</sub></i>
+   </p>
+   <p> where <i class="variable">&gamma;<sub>t</sub></i> = &sum;<sub><i>j</i></sub><i class="variable">s<sub>jt</sub></i><i class="variable">&gamma;<sub>jt</sub></i>.</p>
+
+   <p>It is then clear that those firms with higher than average levels of competitiveness will tend to capture a greater proportion of the demand.</p>
+
+   <h3>Production</h3>
+
+   <p>Let us see how production and growth fit the evolution of demand. Starting out from a supply-demand equilibrium for each firm <i class="variable">Q<sup>d</sup><sub>i0</sub></i> = <i class="variable">Q<sup>s</sup><sub>i0</sub></i>, we assume that each firm's growth rate follows the growth rate of its demand. Hence, if we assume that all firms produce in accordance with technology:</p>
+
+   <p align="center">
+      <i class="variable">Q<sup>s</sup><sub>it</sub></i> = <i class="variable">K<sub>it</sub></i>
+   </p>
+   <p> where <i class="variable">K<sub>it</sub></i> is firm <i>i</i>'s capital, the following must be fulfilled:</p>
+
+   <p align="center">
+      <i class="variable">g<sup>k</sup><sub>it</sub></i> &equiv; (<i class="variable">K<sub>it+1</sub></i>-<i class="variable">K<sub>it</sub></i>)/<i class="variable">K<sub>it</sub></i> =
+      <i class="variable">g<sup>s</sup><sub>it</sub></i> &equiv; (<i class="variable">Q<sup>s</sup><sub>it+1</sub></i>-<i class="variable">Q<sup>s</sup><sub>it</sub></i>)/<i class="variable">Q<sup>s</sup><sub>it</sub></i> =
+      <i class="variable">g<sup>d</sup><sub>it</sub></i> = (<i class="variable">s<sub>it+1</sub></i>-<i class="variable">s<sub>it</sub></i>)/<i class="variable">s<sub>it</sub></i>
+   </p>
+
+   <p>That is, the growth of physical capital <i class="variable">K<sub>it</sub></i> -and, therefore, of the output- in each firm fits the growth of its demand in such a way that, at all times, <i class="variable">Q<sup>d</sup><sub>it</sub></i> = <i class="variable">Q<sup>s</sup><sub>it</sub></i> is fulfilled. Moreover, it is clear that &sum;<sub><i>j</i></sub><i class="variable">K<sub>jt</sub></i> = 1, and therefore <i class="variable">s<sub>it</sub></i> = <i class="variable">Q<sub>it</sub></i> = <i class="variable">K<sub>it</sub></i>.</p>
+
+   <h3>R&amp;D Spending</h3>
+   <p>We assume that firms spend on R&amp;D activities a proportion <i class="variable">r<sub>i</sub></i> &isin; [0,1] of the profits obtained in the previous period:</p>
+
+   <p align="center">
+      <i class="variable">R<sub>it+1</sub></i> = <i class="variable">r<sub>it</sub></i>&middot;<i class="variable">&pi;<sub>it</sub></i>&middot;<i class="variable">Q<sub>it</sub></i>
+   </p>
+
+   <p>Clearly, <i class="variable">r<sub>it</sub></i> is a firm-specific operating routine. According to Silverberg and Verspagen (2005), deciding the most convenient level of has traditionally been considered as an uncertain strategic choice. Therefore, instead of assuming that <i class="variable">r<sub>it</sub></i> is calculated by applying any optimizing procedure, we will consider that firms adapt this proportion by trying to approach the routine of their most successful rival in a certain percentage <i class="parameter">&beta;</i> &isin; [0,1] (<i class="slider">learning-rate</i>). We also include a stochastic component <i class="variable">&epsilon;<sub>it</sub></i> &sim; N(0,<i class="parameter">&sigma;</i>) to model possible imprecisions in the observation of the target competitor's routine. More precisely, we will consider that firms update <i class="variable">r<sub>it</sub></i> according to the following expression:</p>
+
+   <p align="center">
+      <i class="variable">r<sub>it+1</sub></i> = <i class="variable">r<sub>it</sub></i> + <i class="parameter">&beta;</i>&middot;(
+      <<i class="variable">r<sub>t</sub><sup>*</sup></i> + <i class="variable">&epsilon;<sub>it</sub></i>> - <i class="variable">r<sub>it</sub></i>)
+   </p>
+
+   <p>where <i class="variable">r<sub>t</sub><sup>*</sup></i> denotes the R&amp;D routine of the most profitable firm at time <i>t</i>, <i class="parameter">&beta;</i> &isin; [0,1] is the <i class="slider">learning-rate</i>, <i class="variable">&epsilon;<sub>it</sub></i> &sim; N(0,<i class="parameter">&sigma;</i>) is a random variable that follows a normal distribution of mean equal to 0 and standard deviation equal to <i class="parameter">&sigma;</i> (<i class="slider">sigma</i>), and
+      <·> is a clipping function that returns the argument clipped in the interval [0,1].</p>
+
+   <p>Thus, firm <i>i</i>'s unit cost will be:
+   </p>
+   <p align="center">
+      <i class="variable">c<sub>it</sub></i> = 1 + <i class="variable">R<sub>it</sub></i>/<i class="variable">Q<sub>it</sub></i> = 1 + <i class="variable">r<sub>it-1</sub></i><i class="variable">&pi;<sub>it-1</sub></i><i class="variable">Q<sub>it-1</sub></i>/<i class="variable">Q<sub>it</sub></i>
+   </p>
+
+   <h3>Product Innovation</h3>
+   <p>Along the lines in Nelson (1982), we assume the following equation to model the rate of improvement in each firm product performance: </p>
+   <p align="center">
+
+      (<i class="variable">x<sub>it+1</sub></i>-<i class="variable">x<sub>it</sub></i>)/<i class="variable">x<sub>it</sub></i> = <i class="variable">z<sub>it</sub></i>&middot;<i class="variable">R<sub>it</sub></i>
+   </p>
+
+   <p>where <i class="variable">z<sub>it</sub></i> can be identified with the productivity of R&amp;D, and is determined as follows:</p>
+   <p align="center">
+      <i class="variable">z<sub>it</sub></i> = <i class="parameter">&Phi;</i>&middot;((<i class="variable">x<sup><i>max</i></sup><sub>t</sub></i> - <i class="variable">x<sub>it</sub></i>)/<i class="variable">x<sub>it</sub></i>) + <i class="variable">u<sub>it</sub></i>.
+   </p>
+
+   <p>where <i class="parameter">&Phi;</i> &isin; [0,1] is the <i class="slider">knowledge-spillover-rate</i>, <i class="variable">x<sup><i>max</i></sup><sub>t</sub></i> is the maximum performance in time <i>t</i>, and <i class="variable">u<sub>it</sub></i> &sim; &Lambda;(<i class="variable">u<sub>min</sub></i>=0,<i class="variable">u<sub>mode</sub></i>=0,<i class="parameter">u<sub>Max</sub></i>) is a random variable that follows a triangular distribution of minimum value equal to 0, mode value equal to 0, and maximum value equal to <i class="parameter">u<sub>Max</sub></i> (<i class="slider">u-max</i>).</p>
+
+
+   <h3>Exit and Entry of firms</h3>
+   <p>Any firm <i>i</i> whose capital <i class="variable">K<sub>it</sub></i> falls below a minimum quantity <i class="slider">min-capital</i> exits the market. On the other hand, new firms can enter the market. In every time step, we assume that there exists a certain probability that -at most- one new firm entries into the sector. We assume that such a probability is higher, the bigger the maximum profit in the sector. Specifically, we consider that the probability of this event is:
+   </p>
+
+   <p align="center">
+      P(<i>E<sub>t</sub></i>=1) = (1-<i class="parameter">&lambda;</i>)&middot;<i class="variable">&pi;<sup><i>max</i></sup><sub>t</sub></i> / (1+<i class="variable">&pi;<sup><i>max</i></sup><sub>t</sub></i>)
+   </p>
+
+   <p>where <i>E<sub>t</sub></i> is a random variable that represents the number of new entrants (either 0 or 1) at time <i>t</i>, <i class="parameter">&lambda;</i> &isin; [0,1] is the <i class="slider">entry-barriers</i>, and <i class="variable">&pi;<sup><i>max</i></sup><sub>t</sub></i> represents the maximum profit achieved by a firm in <i>t</i>.
+   </p>
+
+   <p>Additionally, we suppose that the new entrant will have an initial capital given by <i class="variable">K<sub>n+1</sub></i> &sim; U(0,<i class="slider">max-entry-capital</i>) where <i class="slider">max-entry-capital</i> is an exogenous parameter, and U denotes the continuous Uniform probability distribution. Let us note that, after assigning the initial capital to the new entrant, all capitals are normalized, so they all add up to one. Thus, at all times any firm's capital is equal to its market share. Finally, we assume that the new entrant chooses randomly one of the existing incumbent firms to replicate its level of performance, and its R&amp;D over profits ratio. The probability of an incumbent to be selected for replication is proportional to its market share.
+   </p>
+
+   <h2>PARAMETERS, INITIAL CONDITIONS, AND BUTTONS</h2>
+
+   <h3>Firms' initial conditions</h3>
+
+   <ul>
+      <li><i class="slider">initial-n-of-firms</i> (<i class="parameter">n<sub>0</sub></i>): Number of firms in <i>t</i>=0. Initially, the market is shared equally among the existing firms, i.e. the market share for each firm at time <i>t</i>=0 is <i class="variable">s<sub>i0</sub></i> = 1/<i class="slider">initial-n-of-firms</i>.</li>
+      <li><i class="slider">initial-performance</i> (<i class="parameter">x<sub>i0</sub></i>): Initial product performance of all firms in <i>t</i>=0.</li>
+      <li><i class="slider">initial-r&amp;d-over-profit</i> (<i class="parameter">r<sub>i0</sub></i>): Initial proportions of the profits that each firm devotes to R&amp;D spending in <i>t</i>=0.</li>
+   </ul>
+
+   <h3>Demand</h3>
+
+   <ul>
+      <li><i class="slider">price/performance-sensitivity</i> (<i class="parameter">&alpha;</i>): Sensitivy of demand to prices (in the trade-off between product performance and price).</li>
+   </ul>
+
+   <h3>R&amp;D Spending</h3>
+
+   <ul>
+      <li><i class="slider">learning-rate</i> (<i class="parameter">&beta;</i>): Rate at which firms approach the R&amp;D routine of the most profitable firm.</li>
+      <li><i class="slider">sigma</i> (<i class="parameter">&sigma;</i>): Standard deviation of the random variable <i class="variable">&epsilon;<sub>it</sub></i> &sim; N(0,<i class="parameter">&sigma;</i>), which models possible imprecisions in the observation of the target competitor's routine.</li>
+   </ul>
+
+   <h3>Product Innovation</h3>
+
+   <ul>
+      <li><i class="slider">knowledge-spillover-rate</i> (<i class="parameter">&Phi;</i>): Knowledge spillover rate.</li>
+      <li><i class="slider">u-max</i> (<i class="parameter">u<sub>Max</sub></i>): Maximum value of the random variable <i class="variable">u<sub>it</sub></i> &sim; &Lambda;(<i class="variable">u<sub>min</sub></i>=0,<i class="variable">u<sub>mode</sub></i>=0,<i class="parameter">u<sub>Max</sub></i>), which introduces stochasticities in the R&amp;D productivity <i class="variable">z<sub>it</sub></i>.</li>
+   </ul>
+
+   <h3>Exit and Entry of firms</h3>
+
+   <ul>
+      <li><i class="slider">min-capital</i>: Minimum capital required to stay in the market.</li>
+      <li><i class="slider">entry-barriers</i> (<i class="parameter">&lambda;</i>): Parameter that controls the difficulty to enter the market. If <i class="parameter">&lambda;</i>=1, no firm can enter the market.</li>
+      <li><i class="slider">max-entry-capital</i>: Parameter used to control the maximum capital with which new firms enter the market. New entrants will have an initial capital given by <i class="variable">K<sub>n+1</sub></i> &sim; U(0,<i class="slider">max-entry-capital</i>) where U denotes the continuous Uniform probability distribution. Note that capitals are normalized t make sure that they all add up to one.</li>
+   </ul>
+
+   <h3>Buttons</h3>
+
+   <ul>
+      <li><i class="button">Setup</i>: Creates the initial number of firms with the parameters and initial conditions set in the <i class="slider">sliders</i> and <i class="slider">boxes</i>. </li>
+      <li><i class="button">Go once</i>: Pressing this button will run the model one time step only. </li>
+      <li><i class="button">Go</i>: Pressing this button will run the model until this same button is pressed again. </li>
+   </ul>
+
+   <h3>Boxes</h3>
+
+   <ul>
+      <li><i class="slider">plot-period</i>: Plots are updated every <i class="slider">plot-period</i> time steps. </li>
+      <li><i class="slider">report-from-time</i>: Monitors (except for time) are updated from time step <i class="slider">report-from-time</i> onwards. </li>
+   </ul>
+
+   <h2>MONITORS AND PLOTS</h2>
+
+   <h3>Monitors</h3>
+
+   <ul>
+      <li><i class="monitor">time</i>: Time in the model.</li>
+      <li><i class="monitor">leadership shifts</i>: Number of leadership shifts since time step <i class="slider">report-from-time</i>. </li>
+      <li><i class="monitor">entrants</i>: Number of entrants since time step <i class="slider">report-from-time</i>. </li>
+      <li><i class="monitor">rel. perf. of leader</i>: Relative performance of the leader, i.e. (<i class="variable">x<sup><i>max</i></sup><sub>t</sub></i>/<i class="variable">x<sub>leader t</sub></i>). The leader is the firm with the highest market share. Reported only from time step <i class="slider">report-from-time</i> onwards. </li>
+      <li><i class="monitor">market share of leader</i>: Market share of the leader. Reported only from time step <i class="slider">report-from-time</i> onwards. </li>
+      <li><i class="monitor">mk. sh. edge of leader</i>: Market share edge of the leader, i.e. difference between the market share of the leader and the next firm with the greatest market share.Reported only from time step <i class="slider">report-from-time</i> onwards. </li>
+   </ul>
+
+
+   <h3>Plots</h3>
+
+   <ul>
+      <li><i class="plot">Herfindahl index</i>: Time series of the Herfindahl index.</li>
+      <li><i class="plot">Number of firms</i>: Time series of the number of firms.</li>
+      <li><i class="plot">Market share</i>: Histogram of the market shares <i class="variable">s<sub>it</sub></i>.</li>
+      <li><i class="plot">Competitiveness</i>: Histogram of firms' competitiveness <i class="variable">&gamma;<sub>it</sub></i>.</li>
+      <li><i class="plot">Price</i>: Histogram of firms' prices <i class="variable">p<sub>it</sub></i>.</li>
+      <li><i class="plot">Relative performance</i>: Histogram of firms' performances divided by the highest performance at the time, i.e. <i class="variable">x<sub>it</sub></i>/<i class="variable">x<sup><i>max</i></sup><sub>t</sub></i>.</li>
+      <li><i class="plot">Firms' life</i>: Time series of firms' lifespan. Each row represents a firm. Each new entrant is added as a row placed just above the previous rows. A line is drawn in each row as long as the corresponding firm is alive. When the firm exits the market, its corresponding line stops.</li>
+      <li><i class="plot">Age distribution</i>: Histogram of firms' ages.</li>
+      <li><i class="plot">R&amp;D over profits</i>: Histogram of firms' proportion of profits that devote to R&amp;D spending: <i class="variable">r<sub>it</sub></i>.</li>
+   </ul>
+
+   <H2>LICENCE</H2>
+   <p>InDyTeRRoD (Industrial Dynamics, Technological Regimes and the Role of Demand) is an evolutionary model designed to explore industrial dynamics in alternative technological regimes.
+      <br>Copyright (C) 2011 <a target="_blank" href="http://isabel.almudi.name">Isabel Almud&iacute;</a>, <a target="_blank" href="http://fatas.name">Francisco Fat&aacute;s</a> &amp; <a target="_blank" href="http://luis.izqui.org">Luis R. Izquierdo</a>
+   </p>
+   <p>This program is free software; you can redistribute it and/or modify it under the terms of the <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p>
+   <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> for more details.</p>
+   <p>You can download a copy of the <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> by clicking <a target="_blank" href="./gpl-3.0.txt">here</a>; you can also get a printed copy writing to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</p>
+   <p>Contact information:
+      <br>Luis R. Izquierdo
+      <br> University of Burgos, Spain.
+      <br> e-mail: <a href="mailto:lrizquierdo@ubu.es">lrizquierdo@ubu.es</a>
+   </p>
+
+
+   <H2>MODELLERS</H2>
+   <p>This program has been designed by <a target="_blank" href="http://isabel.almudi.name">Isabel Almud&iacute;</a>, <a target="_blank" href="http://fatas.name">Francisco Fat&aacute;s</a> &amp; <a target="_blank" href="http://luis.izqui.org">Luis R. Izquierdo</a>, and implemented by <a target="_blank" href="http://luis.izqui.org">Luis R. Izquierdo</a>.</p>
+
+   <H2>REFERENCES</H2>
+   <ul>
+      <li><b>Fatas-Villafranca, F., Saura, D. and Vazquez, F.J. (2011)</b>. A Dynamic Model of Public Opinion Formation. Journal of Public Economic Theory, 13 (3), 417-441.</li>
+      <li><b>Metcalfe, J.S. (1998)</b>. Evolutionary Economics and Creative Destruction. Routledge. London.</li>
+      <li><b>Nelson, R.R. (1982)</b>. The Role of Knowledge in R&amp;D Efficiency. Quarterly Journal of Economics, 97 (3), 453-470.</li>
+      <li><b>Silverberg, G. and Verspagen, B. (2005)</b>. Evolutionary Theorizing on Economic Growth. In Dopfer K. (ed) The Evolutionary Foundations of Economics. Cambridge University Press. Cambridge, UK.</li>
+   </ul>
+
+   <hr>
+
+</body>
+
+</html>
